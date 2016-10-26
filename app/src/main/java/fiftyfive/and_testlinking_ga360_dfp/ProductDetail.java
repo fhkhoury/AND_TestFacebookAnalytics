@@ -79,7 +79,8 @@ public class ProductDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cart.addItem(itemSelected);
-                    // TODO : A refaire avec GTM
+                    // TODO : AddToCart Firebase en dur -  A refaire avec GTM
+                    firebaseTagBundle.clear();
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_ID, itemSelected.sku);
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_NAME, itemSelected.name);
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_CATEGORY, itemSelected.category);
@@ -90,6 +91,13 @@ public class ProductDetail extends AppCompatActivity {
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, firebaseTagBundle);
                     Toast.makeText(getApplicationContext(), itemSelected.name +" has been added to cart.", Toast.LENGTH_SHORT).show();
                     Log.d("TAG: ", "ADD_TO_CART sent.");
+                    // AddToCart GA via GTM
+                    firebaseTagBundle.clear();
+                    firebaseTagBundle.putString("eventCategory", "clic");
+                    firebaseTagBundle.putString("eventAction", "addToCart");
+                    firebaseTagBundle.putString("eventLabel", itemSelected.name);
+                    mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
+                    Log.d("TAG: ", "addToCart sent.");
                 }
             });
         }
