@@ -1,4 +1,4 @@
-package fiftyfive.and_testfirebase;
+package fiftyfive.and_testlinking_ga360_dfp;
 
 import org.junit.Test;
 

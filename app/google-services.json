@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "575676917516",
-    "firebase_url": "https://and-testfirebase.firebaseio.com",
-    "project_id": "and-testfirebase",
-    "storage_bucket": "and-testfirebase.appspot.com"
+    "project_number": "321628620109",
+    "firebase_url": "https://and-testlinking-ga360-dfp.firebaseio.com",
+    "project_id": "and-testlinking-ga360-dfp",
+    "storage_bucket": "and-testlinking-ga360-dfp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:575676917516:android:2e2b268986d15586",
+        "mobilesdk_app_id": "1:321628620109:android:670b4014720121da",
         "android_client_info": {
-          "package_name": "fiftyfive.and_testfirebase"
+          "package_name": "fiftyfive.and_testlinking_ga360_dfp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "575676917516-1vtcb3qhjhsscmgq2l934j414eemhrrv.apps.googleusercontent.com",
+          "client_id": "321628620109-ugpt6aqp6s35cgbha1hml4ofo9mq8lte.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAYq0I3sxgjMusdDfeBYEcytuG7nr5eZhk"
+          "current_key": "AIzaSyBgz9I77cfyG_RsA1jBJ9fAJWqZaP9NMcw"
         }
       ],
       "services": {

@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fiftyfive.and_testfirebase">
+    package="fiftyfive.and_testlinking_ga360_dfp">
 
-    <service android:name=".MyFirebaseMessagingService">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
-    </service>
     <service android:name=".MyFirebaseInstanceIDService">
         <intent-filter>
             <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -19,7 +14,7 @@
         android:label="@string/app_name"
         android:noHistory="true"> <!-- optional, removes the previewActivity from the activity stack. -->
         <intent-filter>
-            <data android:scheme="tagmanager.c.fiftyfive.and_testfirebase" />
+            <data android:scheme="tagmanager.c.fiftyfive.and_testlinking_ga360_dfp" />
 
             <action android:name="android.intent.action.VIEW" />
 
@@ -28,23 +23,23 @@
         </intent-filter>
     </activity>
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="fiftyfive.and_testlinking_ga360_dfp.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="OPEN_ACTIVITY_1" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -54,9 +49,12 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".CartDetailsActivity"></activity>
-    </application>
+        <activity android:name="fiftyfive.and_testlinking_ga360_dfp.CartDetailsActivity" />
+        <activity android:name="fiftyfive.and_testlinking_ga360_dfp.ProductsListActivity" />
+        <activity android:name="fiftyfive.and_testlinking_ga360_dfp.ProductDetail" />
+        <activity android:name="fiftyfive.and_testlinking_ga360_dfp.CheckoutActivity" />
+        <activity android:name="fiftyfive.and_testlinking_ga360_dfp.PaymentConfirmationActivity" />
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    </application>
 
 </manifest>
