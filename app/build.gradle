@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "fiftyfive.and_testlinking_ga360_dfp"
+        applicationId "fiftyfive.and_testFacebookAnalytics"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -20,18 +20,17 @@ android {
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    //for Firebase Core
-    //for Google Cloud Messaging and Notifications
-    //for Firebase crash tool
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.google.firebase:firebase-core:9.4.0'
-    compile 'com.google.firebase:firebase-crash:9.4.0'
     compile 'com.google.android.gms:play-services-tagmanager:9.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     testCompile 'junit:junit:4.12'
 }
 

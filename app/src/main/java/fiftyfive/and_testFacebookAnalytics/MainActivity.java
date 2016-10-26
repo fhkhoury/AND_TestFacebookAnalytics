@@ -1,4 +1,4 @@
-package fiftyfive.and_testlinking_ga360_dfp;
+package fiftyfive.and_testFacebookAnalytics;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,10 +9,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
-import static com.google.firebase.crash.FirebaseCrash.*;
-import com.google.firebase.crash.FirebaseCrash;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFirebaseAnalytics= FirebaseAnalytics.getInstance(this);
-        track_screenView();
+        //Track automatically AppInstalls and AppOpens
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        //mFirebaseAnalytics= FirebaseAnalytics.getInstance(this);
+        //track_screenView();
         //trackAPP_OPEN();
 
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">55 m-Commerce for GA360/DFP</string>
+    <string name="app_name">55 m-Commerce for FacebookAnalytics</string>
     <string name="title_activity_home">HomeActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -10,4 +10,6 @@
     <string name="title_activity_splashscreen">Splashscreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="facebook_app_id">1148694701877669</string>
 </resources>
