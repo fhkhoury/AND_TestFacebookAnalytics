@@ -1,5 +1,7 @@
 package fiftyfive.and_testfirebase;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -10,19 +12,20 @@ import java.util.List;
  */
 public class Cart {
 
-    Integer numberOfProducts;
-    Double total;
-    List<Item> listeProduits;
+    Integer numberOfItems;
+    Double totalAmount;
+    ArrayList<Item> listeProduits;
 
     public  Cart(){
-        numberOfProducts=0;
-        total=0.0;
-        listeProduits = new ArrayList<Item>();
+        super();
+        this.numberOfItems=0;
+        this.totalAmount=0.0;
+        this.listeProduits = new ArrayList<Item>();
     }
 
     public void addItem(Item item){
-        numberOfProducts = numberOfProducts+1 ;
-        total = total + item.price;
+        numberOfItems++;
+        totalAmount += item.price;
         listeProduits.add(item);
     }
 
@@ -31,21 +34,34 @@ public class Cart {
     }
 
     public int getNumberOfArticles(){
-        return numberOfProducts;
+
+        return numberOfItems;
     }
 
     public Item getItem(int index){
-        return (Item) listeProduits.get(index);
+
+        return listeProduits.get(index);
     }
 
-    public ArrayList transformCartToArrayList(Cart cart){
-        ArrayList panier = new ArrayList();
-        for (int i=0; i<cart.getNumberOfArticles(); i++){
-            panier.add(cart.getItem(i));
-            Log.d("Array", panier.get(i).toString());
-        }
-        return panier;
+    public double totalAmount (){
+        return totalAmount;
     }
 
+
+    public Bundle transformCartToBundle(){
+        Bundle cartBundled = new Bundle();
+        cartBundled.putInt("numberOfItems", numberOfItems);
+        cartBundled.putDouble("totalAmount",totalAmount);
+        cartBundled.putParcelableArrayList("items", listeProduits);
+        return cartBundled;
+    }
+
+    public Cart transformBundleToCart(Bundle cartBundled){
+        Cart zeCart = new Cart();
+        zeCart.numberOfItems = cartBundled.getInt("numberOfItems");
+        zeCart.totalAmount= cartBundled.getDouble("totalAmount");
+        zeCart.listeProduits = cartBundled.getParcelableArrayList("items");
+        return zeCart;
+    }
 
 }
