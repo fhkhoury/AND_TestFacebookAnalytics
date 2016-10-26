@@ -38,8 +38,8 @@ public class CartDetailsActivity extends AppCompatActivity {
 
         // send a hit to GA to log the screen name
         firebaseTagBundle.putString("screenName", "Cart details");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "openScreen - Cart details sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView - Cart details sent.");
         Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
 
         //les textviews
@@ -68,12 +68,19 @@ public class CartDetailsActivity extends AppCompatActivity {
         */
     }
     public void checkout(View v){
-        //ENvoi du hit
+        //TODO: ENvoi du hit "checkout" Firebase en dur. A refaire avec GTM
         firebaseTagBundle.clear();
         firebaseTagBundle.putString(FirebaseAnalytics.Param.VALUE, cart.totalAmount.toString());
         firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, firebaseTagBundle);
         Log.d("TAG: ", "BEGIN_CHECKOUT sent.");
+        // Checkout GA via GTM
+        firebaseTagBundle.clear();
+        firebaseTagBundle.putString("eventCategory", "clic");
+        firebaseTagBundle.putString("eventAction", "checkout");
+        firebaseTagBundle.putString("eventLabel", cart.totalAmount.toString());
+        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
+        Log.d("TAG: ", "Checkout sent.");
         zeIntent = new Intent(CartDetailsActivity.this, CheckoutActivity.class);
         zeIntent.putExtra("cart", bundle4cart);
         startActivityForResult(zeIntent, 0);

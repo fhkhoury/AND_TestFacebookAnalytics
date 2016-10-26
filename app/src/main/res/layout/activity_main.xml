@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Fire to GA/FB via GTM"
-        android:onClick="click2Fire_GTM"/>
+        android:onClick="click2GA_GTM"/>
 
     <Button
         xmlns:android="http://schemas.android.com/apk/res/android"

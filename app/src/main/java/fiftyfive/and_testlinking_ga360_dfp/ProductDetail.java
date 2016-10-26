@@ -43,11 +43,11 @@ public class ProductDetail extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // FIre the Firebase Analytics tags
         firebaseTagBundle.putString("screenName", "Detail - " + itemSelected.name);
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "screenName sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView sent.");
         Log.d("INFO; ", "Detail - " + itemSelected.name );
-        itemViewFB();
-        productViewGA();
+        //itemViewFB();
+        //productViewGA();
 
 
         //les textviews
@@ -79,7 +79,8 @@ public class ProductDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cart.addItem(itemSelected);
-                    // TODO : A refaire avec GTM
+                    // TODO : AddToCart Firebase en dur -  A refaire avec GTM
+                    firebaseTagBundle.clear();
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_ID, itemSelected.sku);
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_NAME, itemSelected.name);
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_CATEGORY, itemSelected.category);
@@ -90,6 +91,13 @@ public class ProductDetail extends AppCompatActivity {
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, firebaseTagBundle);
                     Toast.makeText(getApplicationContext(), itemSelected.name +" has been added to cart.", Toast.LENGTH_SHORT).show();
                     Log.d("TAG: ", "ADD_TO_CART sent.");
+                    // AddToCart GA via GTM
+                    firebaseTagBundle.clear();
+                    firebaseTagBundle.putString("eventCategory", "clic");
+                    firebaseTagBundle.putString("eventAction", "addToCart");
+                    firebaseTagBundle.putString("eventLabel", itemSelected.name);
+                    mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
+                    Log.d("TAG: ", "addToCart sent.");
                 }
             });
         }
@@ -116,12 +124,12 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
-    public void itemViewFB(){
+    /*public void itemViewFB(){
         firebaseTagBundle.clear();
         firebaseTagBundle.putString(FirebaseAnalytics.Param.ITEM_ID, itemSelected.sku);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, firebaseTagBundle);
         Log.d("TAG: ", "VIEW_ITEM sent.");
-    }
+    }*/
 
     public void productViewGA(){
 

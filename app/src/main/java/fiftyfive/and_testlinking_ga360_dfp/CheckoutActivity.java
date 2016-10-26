@@ -40,8 +40,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // send a hit to GA to log the screen name
         firebaseTagBundle.putString("screenName", "Checkout");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "openScreen - Checkout sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView - Checkout sent.");
         Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
 
         //Afficher totalAmount dans textView
@@ -89,7 +89,7 @@ public class CheckoutActivity extends AppCompatActivity {
         //Définir les user properties
         mFirebaseAnalytics.setUserProperty("payment_method", paymentMethodChosen);
         mFirebaseAnalytics.setUserProperty("shipping_method", shippingMethodChosen);
-        //Envoyer le tag
+        //TODO: Envoyer le tag "purchase" sur Firebase. A refaire via GTM
         firebaseTagBundle.clear();
         firebaseTagBundle.putString(FirebaseAnalytics.Param.COUPON, "NONE");
         firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
@@ -99,6 +99,14 @@ public class CheckoutActivity extends AppCompatActivity {
         firebaseTagBundle.putString("payment_method", paymentMethodChosen);
         firebaseTagBundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, transactionId);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, firebaseTagBundle);
+        // Purchase GA via GTM
+        firebaseTagBundle.clear();
+        firebaseTagBundle.putString("eventCategory", "clic");
+        firebaseTagBundle.putString("eventAction", "purchase");
+        firebaseTagBundle.putString("eventLabel", cart.totalAmount.toString());
+        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
+        Log.d("TAG: ", "Purchase sent.");
+
         zeIntent = new Intent(CheckoutActivity.this, PaymentConfirmationActivity.class);
         startActivity(zeIntent);
     }

@@ -94,7 +94,7 @@ public class ProductsListActivity extends AppCompatActivity {
                 HashMap<String, String> map = (HashMap<String, String>) availableProducts.getItemAtPosition(position);
                 zeIntent = new Intent(ProductsListActivity.this, ProductDetail.class);
                 bundle4SelectedItem = produitsDispo.get(position).transformItem2Bundle();
-                trackProductClick(produitsDispo.get(position));
+                //trackProductClick(produitsDispo.get(position));
                 zeIntent.putExtra("selectedItem", bundle4SelectedItem); // pour passer le data laye
                 zeIntent.putExtra("cart", bundle4cart);
                 startActivityForResult(zeIntent, 0);
@@ -102,8 +102,8 @@ public class ProductsListActivity extends AppCompatActivity {
             }
         });
 
-        trackopenScreen();
-        trackVIEW_ITEM_LIST(dataLayer);
+        track_screenView();
+        //trackVIEW_ITEM_LIST(dataLayer);
     }
 
     public ArrayList<Item> fillCatalogue(ArrayList<Item> catalogue){
@@ -113,9 +113,9 @@ public class ProductsListActivity extends AppCompatActivity {
         return catalogue;
     }
 
-    public void trackopenScreen(){
+    public void track_screenView(){
         firebaseTagBundle.putString("screenName", "ListeProduits - console");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
         Log.d("TAG: ", "screenName sent.");
     }
 
