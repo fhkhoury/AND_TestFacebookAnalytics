@@ -1,30 +1,15 @@
-package fiftyfive.and_testfirebase;
+package fiftyfive.and_testlinking_ga360_dfp;
 
 import android.content.Intent;
-import android.content.Context;
-import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.messaging.FirebaseMessagingService;
-
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import static com.google.firebase.crash.FirebaseCrash.*;
 import com.google.firebase.crash.FirebaseCrash;
@@ -53,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //méthode pour faire partir un event après avoir cliqué sur un bouton
-    //event codé pour utilisation via GTM et envoyé sur Firebase & GA
+    //event codé pour utilisation via GTM et envoyé sur GA
     public void click2Fire_GTM(View v) {
         firebaseTagBundle.clear();
         firebaseTagBundle.putString("eventCategory", "clic");
@@ -97,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void trackopenScreen(){
-        //send a hit to GA to log the screen name
+
         firebaseTagBundle.clear();
         //firebaseTagBundle.putString(FirebaseAnalytics.Param.VALUE, "HomePage");// TODO: Check si ça fonctionne
         firebaseTagBundle.putString("screenName", "HomePage");

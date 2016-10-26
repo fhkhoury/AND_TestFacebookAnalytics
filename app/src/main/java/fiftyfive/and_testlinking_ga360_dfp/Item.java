@@ -1,10 +1,8 @@
-package fiftyfive.and_testfirebase;
+package fiftyfive.and_testlinking_ga360_dfp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.SimpleExpandableListAdapter;
 
 /**
  * Created by Francois on 12/08/2016.

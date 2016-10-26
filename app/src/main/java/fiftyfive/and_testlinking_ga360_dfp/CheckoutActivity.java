@@ -1,4 +1,4 @@
-package fiftyfive.and_testfirebase;
+package fiftyfive.and_testlinking_ga360_dfp;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

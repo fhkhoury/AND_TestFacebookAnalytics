@@ -1,10 +1,12 @@
+package fiftyfive.and_testlinking_ga360_dfp;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import fiftyfive.and_testfirebase.MainActivity;
-import fiftyfive.and_testfirebase.R;
+import fiftyfive.and_testlinking_ga360_dfp.MainActivity;
+import fiftyfive.and_testlinking_ga360_dfp.R;
 
 public class Splashscreen extends Activity {
 

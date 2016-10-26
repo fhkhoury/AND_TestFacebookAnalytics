@@ -1,11 +1,8 @@
-package fiftyfive.and_testfirebase;
+package fiftyfive.and_testlinking_ga360_dfp;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Francois on 12/08/2016.
