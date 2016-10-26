@@ -10,4 +10,6 @@
     <string name="title_activity_splashscreen">Splashscreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="facebook_app_id">1148694701877669</string>
 </resources>
