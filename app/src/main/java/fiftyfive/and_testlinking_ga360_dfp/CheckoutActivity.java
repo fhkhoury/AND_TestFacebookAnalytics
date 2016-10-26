@@ -40,8 +40,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // send a hit to GA to log the screen name
         firebaseTagBundle.putString("screenName", "Checkout");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "openScreen - Checkout sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView - Checkout sent.");
         Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
 
         //Afficher totalAmount dans textView

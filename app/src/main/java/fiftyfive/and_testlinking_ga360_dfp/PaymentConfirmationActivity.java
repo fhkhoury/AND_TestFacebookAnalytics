@@ -25,8 +25,8 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
 
         // send a hit to GA to log the screen name
         firebaseTagBundle.putString("screenName", "payment_confirmation");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "openScreen - payment_confirmation sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView - payment_confirmation sent.");
         Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
 
     }

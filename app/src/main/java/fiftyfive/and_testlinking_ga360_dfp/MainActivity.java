@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mFirebaseAnalytics= FirebaseAnalytics.getInstance(this);
-
-        trackAPP_OPEN();
+        track_screenView();
+        //trackAPP_OPEN();
 
     }
 
@@ -39,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
     //méthode pour faire partir un event après avoir cliqué sur un bouton
     //event codé pour utilisation via GTM et envoyé sur GA
-    public void click2Fire_GTM(View v) {
+    public void click2GA_GTM(View v) {
         firebaseTagBundle.clear();
         firebaseTagBundle.putString("eventCategory", "clic");
         firebaseTagBundle.putString("eventAction", "fire");
-        firebaseTagBundle.putString("eventLabel", "click2Fire_GTM");
-        mFirebaseAnalytics.logEvent("click2Fire_GTM", firebaseTagBundle);
-        Log.d("TAG: ", "Click2FIre_GTM sent.");
-        Toast.makeText(getApplicationContext(), "Click2FIre_GTM sent.", Toast.LENGTH_SHORT).show();
+        firebaseTagBundle.putString("eventLabel", "click2GA_GTM");
+        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
+        Log.d("TAG: ", "Click2GA_GTM sent.");
+        Toast.makeText(getApplicationContext(), "Click2GA_GTM sent.", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -75,19 +75,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void trackAPP_OPEN(){
+    /*public void trackAPP_OPEN(){
         // send a hard-coded hit to FB when the app is opened
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, firebaseTagBundle);
         Log.d("TAG: ", "APP_OPEN sent.");
-    }
+    }*/
 
-    public void trackopenScreen(){
+    public void track_screenView(){
 
         firebaseTagBundle.clear();
-        //firebaseTagBundle.putString(FirebaseAnalytics.Param.VALUE, "HomePage");// TODO: Check si ça fonctionne
         firebaseTagBundle.putString("screenName", "HomePage");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "openScreen - HomePage sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView - HomePage sent.");
     }
 
     @Override

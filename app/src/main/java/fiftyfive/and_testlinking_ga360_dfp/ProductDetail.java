@@ -43,11 +43,11 @@ public class ProductDetail extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // FIre the Firebase Analytics tags
         firebaseTagBundle.putString("screenName", "Detail - " + itemSelected.name);
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "screenName sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView sent.");
         Log.d("INFO; ", "Detail - " + itemSelected.name );
-        itemViewFB();
-        productViewGA();
+        //itemViewFB();
+        //productViewGA();
 
 
         //les textviews
@@ -116,12 +116,12 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
-    public void itemViewFB(){
+    /*public void itemViewFB(){
         firebaseTagBundle.clear();
         firebaseTagBundle.putString(FirebaseAnalytics.Param.ITEM_ID, itemSelected.sku);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, firebaseTagBundle);
         Log.d("TAG: ", "VIEW_ITEM sent.");
-    }
+    }*/
 
     public void productViewGA(){
 

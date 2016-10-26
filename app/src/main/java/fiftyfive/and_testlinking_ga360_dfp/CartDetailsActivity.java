@@ -38,8 +38,8 @@ public class CartDetailsActivity extends AppCompatActivity {
 
         // send a hit to GA to log the screen name
         firebaseTagBundle.putString("screenName", "Cart details");
-        mFirebaseAnalytics.logEvent("openScreen", firebaseTagBundle);
-        Log.d("TAG: ", "openScreen - Cart details sent.");
+        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        Log.d("TAG: ", "screenView - Cart details sent.");
         Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
 
         //les textviews
