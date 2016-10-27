@@ -13,11 +13,17 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
+import static android.provider.Telephony.Mms.Part.CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_INITIATED_CHECKOUT;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_TYPE;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CURRENCY;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_NUM_ITEMS;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_PAYMENT_INFO_AVAILABLE;
 import static com.google.android.gms.analytics.internal.zzy.s;
 
 public class CartDetailsActivity extends AppCompatActivity {
 
-    //private FirebaseAnalytics mFirebaseAnalytics;
     Cart cart = new Cart();
     ListView mListView;
     ArrayList<Item> panier = new ArrayList<Item>();
@@ -52,7 +58,7 @@ public class CartDetailsActivity extends AppCompatActivity {
         totalAmount.setText("total amount");
 
         //TODO: Faire une interface de panier propre
-        /*//Récupérer  la listView
+        /*Récupérer  la listView
         mListView = (ListView) findViewById(R.id.listView);
         //remplir la liste avec le panier
         for (int i=0; i<cart.getNumberOfArticles(); i++){
@@ -69,21 +75,19 @@ public class CartDetailsActivity extends AppCompatActivity {
         */
     }
     public void checkout(View v){
-        /* TODO: ENvoi du hit "checkout" FB en dur.
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.VALUE, cart.totalAmount.toString());
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, firebaseTagBundle);
-        Log.d("TAG: ", "BEGIN_CHECKOUT sent.");
-        // Checkout GA via GTM
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString("eventCategory", "clic");
-        firebaseTagBundle.putString("eventAction", "checkout");
-        firebaseTagBundle.putString("eventLabel", cart.totalAmount.toString());
-        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
-        Log.d("TAG: ", "Checkout sent.");
+        //ENvoi du hit "checkout" FB en dur.
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.clear();
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_TYPE, "cart");
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_ID, "12345678");
+        FBTagBundle.putString(EVENT_PARAM_NUM_ITEMS, cart.numberOfItems.toString());
+        FBTagBundle.putString(EVENT_PARAM_CURRENCY, "EUR");
+        FBTagBundle.putString(EVENT_PARAM_PAYMENT_INFO_AVAILABLE, "0");
+        logger.logEvent(EVENT_NAME_INITIATED_CHECKOUT, cart.totalAmount, FBTagBundle);
+        Log.d("TAG: ", "Checkout_initiated sent.");
+
         zeIntent = new Intent(CartDetailsActivity.this, CheckoutActivity.class);
         zeIntent.putExtra("cart", bundle4cart);
-        startActivityForResult(zeIntent, 0);*/
+        startActivityForResult(zeIntent, 0);
     }
 }

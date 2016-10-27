@@ -14,6 +14,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
+import static android.provider.Telephony.Mms.Part.CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_PURCHASED;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_VIEWED_CONTENT;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_TYPE;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CURRENCY;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_NUM_ITEMS;
+
 public class CheckoutActivity extends AppCompatActivity {
 
     Cart cart = new Cart();
@@ -87,16 +94,21 @@ public class CheckoutActivity extends AppCompatActivity {
         /* TODO : Définir les user properties Facebook
         mFirebaseAnalytics.setUserProperty("payment_method", paymentMethodChosen);
         mFirebaseAnalytics.setUserProperty("shipping_method", shippingMethodChosen);
-        //TODO: Envoyer le tag "purchase" sur Facebook
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.COUPON, "NONE");
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
-        firebaseTagBundle.putDouble(FirebaseAnalytics.Param.VALUE, cart.totalAmount);
-        firebaseTagBundle.putDouble(FirebaseAnalytics.Param.TAX, (cart.totalAmount * 0.2));
-        firebaseTagBundle.putDouble(FirebaseAnalytics.Param.SHIPPING, (cart.totalAmount * 0.05));
-        firebaseTagBundle.putString("payment_method", paymentMethodChosen);
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, transactionId);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, firebaseTagBundle);*/
+        */
+
+
+        //Envoi du tag "purchase" sur Facebook
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.clear();
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_TYPE, "order");
+        FBTagBundle.putString(EVENT_PARAM_NUM_ITEMS, cart.numberOfItems.toString());
+        FBTagBundle.putString(CONTENT_ID, transactionId);
+        FBTagBundle.putString(EVENT_PARAM_CURRENCY, "EUR");
+        FBTagBundle.putString("orderValue", cart.totalAmount.toString());
+        //FBTagBundle.putString("shipping", cart.totalAmount * 0.05;
+        FBTagBundle.putString("payment_method", paymentMethodChosen);
+        logger.logEvent(EVENT_NAME_PURCHASED, cart.totalAmount*1.05, FBTagBundle);
+        Log.d("TAG: ", EVENT_NAME_PURCHASED +" sent.");
 
         zeIntent = new Intent(CheckoutActivity.this, PaymentConfirmationActivity.class);
         startActivity(zeIntent);

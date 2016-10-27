@@ -17,8 +17,14 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.R.attr.id;
 import static android.R.attr.tag;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_VIEWED_CONTENT;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_TYPE;
+import static com.google.android.gms.analytics.internal.zzy.d;
 import static com.google.android.gms.analytics.internal.zzy.e;
+import static com.google.android.gms.analytics.internal.zzy.i;
 
 public class ProductsListActivity extends AppCompatActivity {
 
@@ -99,7 +105,7 @@ public class ProductsListActivity extends AppCompatActivity {
         });
 
         track_screenView();
-        //trackVIEW_ITEM_LIST(dataLayer);
+        track_listView();
     }
 
     public ArrayList<Item> fillCatalogue(ArrayList<Item> catalogue){
@@ -116,12 +122,16 @@ public class ProductsListActivity extends AppCompatActivity {
         Log.d("TAG: ", "screenName sent.");
     }
 
-    public void trackVIEW_ITEM_LIST(DataLayer dataLayer){
+    public void track_listView(){
         FBTagBundle.clear();
         //envoi du tag e-commerce "viewList" pour FB
-        FBTagBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "console");
-        //logger.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST, firebaseTagBundle);
-        Log.d("TAG: ", "VIEW_ITEM_LIST sent.");
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_TYPE, "product_group");
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_ID, produitsDispo.get(0).category );
+        logger.logEvent(EVENT_NAME_VIEWED_CONTENT, FBTagBundle);
+        Log.d("TAG: ", EVENT_NAME_VIEWED_CONTENT+" sent.");
+        Log.d("INFO; ", "List View sent.");
+
 
 
         //envoi du tag e-commerce "viewList" pour GA via GTM v4 DataLayer;
@@ -158,34 +168,6 @@ public class ProductsListActivity extends AppCompatActivity {
 
     }
 
-    public void trackProductClick(Item item){
-
-        Bundle productsBundle = new Bundle();
-        productsBundle.putString("name", item.name);
-        productsBundle.putString("id", item.sku);
-        productsBundle.putString("price", item.price.toString());
-        productsBundle.putString("brand", item.brand);
-        productsBundle.putString("category", item.category);
-        productsBundle.putString("variant", item.variant);
-
-        Bundle actionFieldBundle = new Bundle();
-        actionFieldBundle.putString("list", item.category);
-        actionFieldBundle.putBundle("products", productsBundle);
-
-        Bundle clickBundle = new Bundle();
-        clickBundle.putBundle("click", actionFieldBundle);
-
-        //Bundle ecommerceBundle = new Bundle();
-        //ecommerceBundle.putBundle("ecommerce", clickBundle);
-
-        // TODO: Tag FB Clic sur le produit
-        /*envoi du tag e-commerce "click" pour GA;
-        gaTagBundle.clear();
-        gaTagBundle.putBundle("ecommerce", clickBundle);
-        mFirebaseAnalytics.logEvent("productClick", gaTagBundle);
-        Log.d("TAG: ", "e-commerce-productClick sent.");*/
-
-    }
 
     public ArrayList<Bundle> constructBundleImpressions(ArrayList<Item> produitsDispo){
         ArrayList<Bundle> bundleImpressions = new ArrayList<Bundle>();
