@@ -9,19 +9,26 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
+import static android.provider.Telephony.Mms.Part.CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_PURCHASED;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_VIEWED_CONTENT;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_TYPE;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CURRENCY;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_NUM_ITEMS;
+
 public class CheckoutActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     Cart cart = new Cart();
     ListView mListView;
     ArrayList<Item> panier = new ArrayList<Item>();
     Bundle bundle4cart = new Bundle();
     Intent zeIntent = new Intent();
-    Bundle firebaseTagBundle = new Bundle();
+    Bundle FBTagBundle = new Bundle();
     String shippingMethodChosen ;
     String paymentMethodChosen ;
     String transactionId ;
@@ -35,14 +42,12 @@ public class CheckoutActivity extends AppCompatActivity {
         bundle4cart = zeIntent.getBundleExtra("cart");
         cart = cart.transformBundleToCart(bundle4cart);
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // send a hit to GA to log the screen name
-        firebaseTagBundle.putString("screenName", "Checkout");
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString("screenName", "Checkout");
+        logger.logEvent("screenView", FBTagBundle);
         Log.d("TAG: ", "screenView - Checkout sent.");
-        Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
+        Log.d("INFO: ", FBTagBundle.getString("screenName"));
 
         //Afficher totalAmount dans textView
         TextView totalAmount = (TextView)findViewById(R.id.totalAmount);
@@ -86,26 +91,24 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     public void pay(View v){
-        //Définir les user properties
+        /* TODO : Définir les user properties Facebook
         mFirebaseAnalytics.setUserProperty("payment_method", paymentMethodChosen);
         mFirebaseAnalytics.setUserProperty("shipping_method", shippingMethodChosen);
-        //TODO: Envoyer le tag "purchase" sur Firebase. A refaire via GTM
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.COUPON, "NONE");
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
-        firebaseTagBundle.putDouble(FirebaseAnalytics.Param.VALUE, cart.totalAmount);
-        firebaseTagBundle.putDouble(FirebaseAnalytics.Param.TAX, (cart.totalAmount * 0.2));
-        firebaseTagBundle.putDouble(FirebaseAnalytics.Param.SHIPPING, (cart.totalAmount * 0.05));
-        firebaseTagBundle.putString("payment_method", paymentMethodChosen);
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, transactionId);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, firebaseTagBundle);
-        // Purchase GA via GTM
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString("eventCategory", "clic");
-        firebaseTagBundle.putString("eventAction", "purchase");
-        firebaseTagBundle.putString("eventLabel", cart.totalAmount.toString());
-        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
-        Log.d("TAG: ", "Purchase sent.");
+        */
+
+
+        //Envoi du tag "purchase" sur Facebook
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.clear();
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_TYPE, "order");
+        FBTagBundle.putString(EVENT_PARAM_NUM_ITEMS, cart.numberOfItems.toString());
+        FBTagBundle.putString(CONTENT_ID, transactionId);
+        FBTagBundle.putString(EVENT_PARAM_CURRENCY, "EUR");
+        FBTagBundle.putString("orderValue", cart.totalAmount.toString());
+        //FBTagBundle.putString("shipping", cart.totalAmount * 0.05;
+        FBTagBundle.putString("payment_method", paymentMethodChosen);
+        logger.logEvent(EVENT_NAME_PURCHASED, cart.totalAmount*1.05, FBTagBundle);
+        Log.d("TAG: ", EVENT_NAME_PURCHASED +" sent.");
 
         zeIntent = new Intent(CheckoutActivity.this, PaymentConfirmationActivity.class);
         startActivity(zeIntent);

@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class PaymentConfirmationActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
-    Bundle firebaseTagBundle = new Bundle();
+    Bundle FBTagBundle = new Bundle();
 
 
 
@@ -20,14 +20,12 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_confirmation);
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // send a hit to GA to log the screen name
-        firebaseTagBundle.putString("screenName", "payment_confirmation");
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString("screenName", "payment_confirmation");
+        logger.logEvent("screenView", FBTagBundle);
         Log.d("TAG: ", "screenView - payment_confirmation sent.");
-        Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
+        Log.d("INFO: ", FBTagBundle.getString("screenName"));
 
     }
 
@@ -36,4 +34,6 @@ public class PaymentConfirmationActivity extends AppCompatActivity {
         startActivity(zeIntent);
         moveTaskToBack(true);
     }
+
+
 }

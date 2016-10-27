@@ -9,18 +9,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import static android.R.attr.itemBackground;
+import static android.R.attr.tag;
+import static android.provider.Telephony.Mms.Part.CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_ADDED_TO_CART;
+import static com.facebook.appevents.AppEventsConstants.EVENT_NAME_VIEWED_CONTENT;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_ID;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CONTENT_TYPE;
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CURRENCY;
+import static com.google.android.gms.analytics.internal.zzy.f;
 
 public class ProductDetail extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     Intent zeIntent = new Intent();
     Bundle bundle4Item = new Bundle();
     Bundle bundle4Cart = new Bundle();
     Item itemSelected = new Item();
     Cart cart = new Cart(); //TODO: pensez à récupérer le cart entre les activités
-    Bundle firebaseTagBundle = new Bundle();
-    Bundle gaTagBundle = new Bundle();
+    Bundle FBTagBundle = new Bundle();
 
 
     @Override
@@ -39,15 +48,14 @@ public class ProductDetail extends AppCompatActivity {
         Log.d("INFO: ", "item récupéré.");
         itemSelected = itemSelected.transformBundle2Item(bundle4Item);
 
-        //Obtain the FirebaseAnalytics instance
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        // FIre the Firebase Analytics tags
-        firebaseTagBundle.putString("screenName", "Detail - " + itemSelected.name);
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString("screenName", "Detail - " + itemSelected.name);
+        logger.logEvent("screenView", FBTagBundle);
         Log.d("TAG: ", "screenView sent.");
         Log.d("INFO; ", "Detail - " + itemSelected.name );
-        //itemViewFB();
-        //productViewGA();
+        //TODO: Ecrire le product view de FB
+        track_itemView();
 
 
         //les textviews
@@ -79,25 +87,19 @@ public class ProductDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cart.addItem(itemSelected);
-                    // TODO : AddToCart Firebase en dur -  A refaire avec GTM
-                    firebaseTagBundle.clear();
-                    firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_ID, itemSelected.sku);
-                    firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_NAME, itemSelected.name);
-                    firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_CATEGORY, itemSelected.category);
-                    firebaseTagBundle.putDouble(FirebaseAnalytics.Param.PRICE, itemSelected.price);
-                    firebaseTagBundle.putDouble(FirebaseAnalytics.Param.VALUE, itemSelected.price);
-                    firebaseTagBundle.putString(FirebaseAnalytics.Param.QUANTITY, "1");
-                    firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
-                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, firebaseTagBundle);
+
+                    //Tracking du AddToCart
+                    AppEventsLogger logger = AppEventsLogger.newLogger(ProductDetail.this);
+                    FBTagBundle.clear();
+                    FBTagBundle.putString(EVENT_PARAM_CONTENT_ID, itemSelected.sku);
+                    FBTagBundle.putString(EVENT_PARAM_CONTENT_TYPE, "product");
+                    FBTagBundle.putString(EVENT_PARAM_CURRENCY, "EUR");
+                    FBTagBundle.putString("productName", itemSelected.name);
+                    FBTagBundle.putString("productCategory", itemSelected.category);
+                    FBTagBundle.putString("quantity", "1");
+                    logger.logEvent(EVENT_NAME_ADDED_TO_CART, itemSelected.price, FBTagBundle);
                     Toast.makeText(getApplicationContext(), itemSelected.name +" has been added to cart.", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG: ", "ADD_TO_CART sent.");
-                    // AddToCart GA via GTM
-                    firebaseTagBundle.clear();
-                    firebaseTagBundle.putString("eventCategory", "clic");
-                    firebaseTagBundle.putString("eventAction", "addToCart");
-                    firebaseTagBundle.putString("eventLabel", itemSelected.name);
-                    mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
-                    Log.d("TAG: ", "addToCart sent.");
+                    Log.d("TAG: ", "ADDED_TO_CART sent.");
                 }
             });
         }
@@ -124,52 +126,20 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
-    /*public void itemViewFB(){
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString(FirebaseAnalytics.Param.ITEM_ID, itemSelected.sku);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, firebaseTagBundle);
-        Log.d("TAG: ", "VIEW_ITEM sent.");
-    }*/
-
-    public void productViewGA(){
-
-        Bundle productsBundle = new Bundle();
-        productsBundle.putString("name", itemSelected.name);
-        productsBundle.putString("id", itemSelected.sku);
-        productsBundle.putString("price", itemSelected.price.toString());
-        productsBundle.putString("brand", itemSelected.brand);
-        productsBundle.putString("category", itemSelected.category);
-        productsBundle.putString("variant", itemSelected.variant);
-
-        Bundle actionFieldBundle = new Bundle();
-        actionFieldBundle.putString("list", itemSelected.category);
-        actionFieldBundle.putBundle("products", productsBundle);
-
-        Bundle detailBundle = new Bundle();
-        detailBundle.putBundle("detail", actionFieldBundle);
-
-        //envoi du tag e-commerce "detail" pour GA;
-        gaTagBundle.clear();
-        gaTagBundle.putBundle("ecommerce", detailBundle);
-        mFirebaseAnalytics.logEvent("ecommerce", gaTagBundle);
-        Log.d("TAG: ", "product view sent.");
-
-        /* Measure a view of product details.
-        dataLayer.push("ecommerce",
-                DataLayer.mapOf(
-                        "detail", DataLayer.mapOf(
-                                "actionField", DataLayer.mapOf("list", "Apparel Gallery"),               // detail actions have an optional list property.
-                                "products", DataLayer.listOf(
-                                  DataLayer.mapOf(
-                                                "name", "Triblend Android T-Shirt",   // Name or ID is required.
-                                                "id", "12345",
-                                                "price", "15.25",
-                                                "brand", "Google",
-                                                "category", "Apparel",
-                                                "variant", "Gray")))));
-        */
-
+    public void track_itemView(){
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_ID, itemSelected.sku);
+        FBTagBundle.putString(EVENT_PARAM_CONTENT_TYPE, "product");
+        FBTagBundle.putString("name", itemSelected.name);
+        FBTagBundle.putString("price", itemSelected.price.toString());
+        FBTagBundle.putString("brand", itemSelected.brand);
+        FBTagBundle.putString("category", itemSelected.category);
+        FBTagBundle.putString("variant", itemSelected.variant);
+        logger.logEvent(EVENT_NAME_VIEWED_CONTENT, FBTagBundle);
+        Log.d("TAG: ", EVENT_NAME_VIEWED_CONTENT+" sent.");
+        Log.d("INFO; ", "Detail - " + itemSelected.name );
     }
+
 
 
 }
