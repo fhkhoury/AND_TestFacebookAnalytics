@@ -31,10 +31,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
 
-        //Create an instance of FB Analytics logger
-        AppEventsLogger logger = AppEventsLogger.newLogger(this);
-
-        track_screenView(logger);
+        track_screenView();
 
 
     }
@@ -44,11 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
     //méthode pour faire partir un event après avoir cliqué sur un bouton
     //event codé pour utilisation via GTM et envoyé sur GA
-    public void track_event(View v, AppEventsLogger logger) {
+    public void track_event(View v) {
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        //Set the event parameters
         FBTagParameters.clear();
         FBTagParameters.putString("eventCategory", "clic");
         FBTagParameters.putString("eventAction", "fire");
         FBTagParameters.putString("eventLabel", "click2GA_GTM");
+        //Log the event
         logger.logEvent("eventClick", FBTagParameters);
         Log.d("TAG: ", "track_event.");
         Toast.makeText(getApplicationContext(), "track_event sent.", Toast.LENGTH_SHORT).show();
@@ -73,10 +74,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void track_screenView(AppEventsLogger logger){
-
+    public void track_screenView(){
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        //Set the event parameters
         FBTagParameters.clear();
         FBTagParameters.putString("screenName", "HomePage");
+        //Log the event
         logger.logEvent("screenView", FBTagParameters);
         Log.d("TAG: ", "screenView - HomePage sent.");
     }
