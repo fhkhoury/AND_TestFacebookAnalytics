@@ -14,16 +14,8 @@
         android:id="@+id/button_click2Fire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fire to GA/FB via GTM"
-        android:onClick="click2GA_GTM"/>
-
-    <Button
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/button_click2Crash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Crash the app"
-        android:onClick="crash"/>
+        android:text="Fire to FB Analytics"
+        android:onClick="track_event"/>
 
     <Button
         android:layout_width="wrap_content"

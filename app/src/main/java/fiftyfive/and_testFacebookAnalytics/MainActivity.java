@@ -13,15 +13,15 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics ;
+    //private FirebaseAnalytics mFirebaseAnalytics ;
     Spinner catalogue;
     Cart cart = new Cart();
-    public final static String SUPERBUNDLE = "DataLayer";
     Bundle bundle4cart = cart.transformCartToBundle();
 
-    Bundle firebaseTagBundle = new Bundle();
+    Bundle FBTagParameters = new Bundle();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Track automatically AppInstalls and AppOpens
         FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-        //mFirebaseAnalytics= FirebaseAnalytics.getInstance(this);
-        //track_screenView();
-        //trackAPP_OPEN();
+        //AppEventsLogger.activateApp(this);
+
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+
+        track_screenView(logger);
+
 
     }
 
@@ -41,24 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
     //méthode pour faire partir un event après avoir cliqué sur un bouton
     //event codé pour utilisation via GTM et envoyé sur GA
-    public void click2GA_GTM(View v) {
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString("eventCategory", "clic");
-        firebaseTagBundle.putString("eventAction", "fire");
-        firebaseTagBundle.putString("eventLabel", "click2GA_GTM");
-        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
-        Log.d("TAG: ", "Click2GA_GTM sent.");
-        Toast.makeText(getApplicationContext(), "Click2GA_GTM sent.", Toast.LENGTH_SHORT).show();
+    public void track_event(View v, AppEventsLogger logger) {
+        FBTagParameters.clear();
+        FBTagParameters.putString("eventCategory", "clic");
+        FBTagParameters.putString("eventAction", "fire");
+        FBTagParameters.putString("eventLabel", "click2GA_GTM");
+        logger.logEvent("eventClick", FBTagParameters);
+        Log.d("TAG: ", "track_event.");
+        Toast.makeText(getApplicationContext(), "track_event sent.", Toast.LENGTH_SHORT).show();
 
 
-    }
-
-    // Make a crash
-    public void crash(View v){
-        report(new Exception("My first Android non-fatal error"));
-        FirebaseCrash.log("App has crashed");
-        Log.d("CRASH: ", "App has crashed, Buddy!");
-        Toast.makeText(getApplicationContext(), "App has crashed, Buddy!", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -77,17 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*public void trackAPP_OPEN(){
-        // send a hard-coded hit to FB when the app is opened
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, firebaseTagBundle);
-        Log.d("TAG: ", "APP_OPEN sent.");
-    }*/
 
-    public void track_screenView(){
+    public void track_screenView(AppEventsLogger logger){
 
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString("screenName", "HomePage");
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        FBTagParameters.clear();
+        FBTagParameters.putString("screenName", "HomePage");
+        logger.logEvent("screenView", FBTagParameters);
         Log.d("TAG: ", "screenView - HomePage sent.");
     }
 
