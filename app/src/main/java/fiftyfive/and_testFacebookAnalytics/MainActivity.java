@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Track automatically AppInstalls and AppOpens
         FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(this.getApplication());
+
+        /*TODO: Tracking User Properties impossible car méthode setUser dépréciée
+        AdvertisingIdClient.Info adId = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
+        AppEventsLogger.setUserID(adId.toString());
+        */
 
         track_screenView();
 
