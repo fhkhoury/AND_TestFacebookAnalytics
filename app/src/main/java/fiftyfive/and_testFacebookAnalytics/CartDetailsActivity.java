@@ -8,19 +8,22 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
+import static com.google.android.gms.analytics.internal.zzy.s;
+
 public class CartDetailsActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
+    //private FirebaseAnalytics mFirebaseAnalytics;
     Cart cart = new Cart();
     ListView mListView;
     ArrayList<Item> panier = new ArrayList<Item>();
     Bundle bundle4cart = new Bundle();
     Intent zeIntent = new Intent();
-    Bundle firebaseTagBundle = new Bundle();
+    Bundle FBTagBundle = new Bundle();
 
 
     @Override
@@ -33,14 +36,12 @@ public class CartDetailsActivity extends AppCompatActivity {
         cart = cart.transformBundleToCart(bundle4cart);
         Log.d("ACTION: ", "Bundle récupéré");
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // send a hit to GA to log the screen name
-        firebaseTagBundle.putString("screenName", "Cart details");
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString("screenName", "Cart details");
+        logger.logEvent("screenView", FBTagBundle);
         Log.d("TAG: ", "screenView - Cart details sent.");
-        Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
+        Log.d("INFO: ", FBTagBundle.getString("screenName"));
 
         //les textviews
         TextView numberOfItems = (TextView)findViewById(R.id.numberOfItems);
@@ -68,7 +69,7 @@ public class CartDetailsActivity extends AppCompatActivity {
         */
     }
     public void checkout(View v){
-        //TODO: ENvoi du hit "checkout" Firebase en dur. A refaire avec GTM
+        /* TODO: ENvoi du hit "checkout" FB en dur.
         firebaseTagBundle.clear();
         firebaseTagBundle.putString(FirebaseAnalytics.Param.VALUE, cart.totalAmount.toString());
         firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
@@ -83,6 +84,6 @@ public class CartDetailsActivity extends AppCompatActivity {
         Log.d("TAG: ", "Checkout sent.");
         zeIntent = new Intent(CartDetailsActivity.this, CheckoutActivity.class);
         zeIntent.putExtra("cart", bundle4cart);
-        startActivityForResult(zeIntent, 0);
+        startActivityForResult(zeIntent, 0);*/
     }
 }

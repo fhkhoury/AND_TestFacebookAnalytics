@@ -11,12 +11,10 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 
 public class MainActivity extends AppCompatActivity {
 
-    //private FirebaseAnalytics mFirebaseAnalytics ;
+
     Spinner catalogue;
     Cart cart = new Cart();
     Bundle bundle4cart = cart.transformCartToBundle();
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Track automatically AppInstalls and AppOpens
         FacebookSdk.sdkInitialize(getApplicationContext());
-        //AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(this);
 
         track_screenView();
 

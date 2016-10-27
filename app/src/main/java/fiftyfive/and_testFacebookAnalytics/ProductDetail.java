@@ -9,17 +9,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import static android.R.attr.tag;
 
 public class ProductDetail extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     Intent zeIntent = new Intent();
     Bundle bundle4Item = new Bundle();
     Bundle bundle4Cart = new Bundle();
     Item itemSelected = new Item();
     Cart cart = new Cart(); //TODO: pensez à récupérer le cart entre les activités
-    Bundle firebaseTagBundle = new Bundle();
+    Bundle FBTagBundle = new Bundle();
     Bundle gaTagBundle = new Bundle();
 
 
@@ -39,13 +41,13 @@ public class ProductDetail extends AppCompatActivity {
         Log.d("INFO: ", "item récupéré.");
         itemSelected = itemSelected.transformBundle2Item(bundle4Item);
 
-        //Obtain the FirebaseAnalytics instance
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        // FIre the Firebase Analytics tags
-        firebaseTagBundle.putString("screenName", "Detail - " + itemSelected.name);
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString("screenName", "Detail - " + itemSelected.name);
+        logger.logEvent("screenView", FBTagBundle);
         Log.d("TAG: ", "screenView sent.");
         Log.d("INFO; ", "Detail - " + itemSelected.name );
+        //TODO: Ecrire le product view de FB
         //itemViewFB();
         //productViewGA();
 
@@ -79,7 +81,7 @@ public class ProductDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cart.addItem(itemSelected);
-                    // TODO : AddToCart Firebase en dur -  A refaire avec GTM
+                    /* TODO : AddToCart Firebase en dur -  A refaire avec GTM
                     firebaseTagBundle.clear();
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_ID, itemSelected.sku);
                     firebaseTagBundle.putString(FirebaseAnalytics.Param.PRODUCT_NAME, itemSelected.name);
@@ -97,7 +99,7 @@ public class ProductDetail extends AppCompatActivity {
                     firebaseTagBundle.putString("eventAction", "addToCart");
                     firebaseTagBundle.putString("eventLabel", itemSelected.name);
                     mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
-                    Log.d("TAG: ", "addToCart sent.");
+                    Log.d("TAG: ", "addToCart sent.");*/
                 }
             });
         }
@@ -148,11 +150,11 @@ public class ProductDetail extends AppCompatActivity {
         Bundle detailBundle = new Bundle();
         detailBundle.putBundle("detail", actionFieldBundle);
 
-        //envoi du tag e-commerce "detail" pour GA;
+        /*envoi du tag e-commerce "detail" pour GA;
         gaTagBundle.clear();
         gaTagBundle.putBundle("ecommerce", detailBundle);
         mFirebaseAnalytics.logEvent("ecommerce", gaTagBundle);
-        Log.d("TAG: ", "product view sent.");
+        Log.d("TAG: ", "product view sent.");*/
 
         /* Measure a view of product details.
         dataLayer.push("ecommerce",

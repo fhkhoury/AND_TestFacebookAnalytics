@@ -9,19 +9,19 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
 public class CheckoutActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     Cart cart = new Cart();
     ListView mListView;
     ArrayList<Item> panier = new ArrayList<Item>();
     Bundle bundle4cart = new Bundle();
     Intent zeIntent = new Intent();
-    Bundle firebaseTagBundle = new Bundle();
+    Bundle FBTagBundle = new Bundle();
     String shippingMethodChosen ;
     String paymentMethodChosen ;
     String transactionId ;
@@ -35,14 +35,12 @@ public class CheckoutActivity extends AppCompatActivity {
         bundle4cart = zeIntent.getBundleExtra("cart");
         cart = cart.transformBundleToCart(bundle4cart);
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // send a hit to GA to log the screen name
-        firebaseTagBundle.putString("screenName", "Checkout");
-        mFirebaseAnalytics.logEvent("screenView", firebaseTagBundle);
+        //Create an instance of FB Analytics logger
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+        FBTagBundle.putString("screenName", "Checkout");
+        logger.logEvent("screenView", FBTagBundle);
         Log.d("TAG: ", "screenView - Checkout sent.");
-        Log.d("INFO: ", firebaseTagBundle.getString("screenName"));
+        Log.d("INFO: ", FBTagBundle.getString("screenName"));
 
         //Afficher totalAmount dans textView
         TextView totalAmount = (TextView)findViewById(R.id.totalAmount);
@@ -86,10 +84,10 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     public void pay(View v){
-        //Définir les user properties
+        /* TODO : Définir les user properties Facebook
         mFirebaseAnalytics.setUserProperty("payment_method", paymentMethodChosen);
         mFirebaseAnalytics.setUserProperty("shipping_method", shippingMethodChosen);
-        //TODO: Envoyer le tag "purchase" sur Firebase. A refaire via GTM
+        //TODO: Envoyer le tag "purchase" sur Facebook
         firebaseTagBundle.clear();
         firebaseTagBundle.putString(FirebaseAnalytics.Param.COUPON, "NONE");
         firebaseTagBundle.putString(FirebaseAnalytics.Param.CURRENCY, "EUR");
@@ -98,14 +96,7 @@ public class CheckoutActivity extends AppCompatActivity {
         firebaseTagBundle.putDouble(FirebaseAnalytics.Param.SHIPPING, (cart.totalAmount * 0.05));
         firebaseTagBundle.putString("payment_method", paymentMethodChosen);
         firebaseTagBundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, transactionId);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, firebaseTagBundle);
-        // Purchase GA via GTM
-        firebaseTagBundle.clear();
-        firebaseTagBundle.putString("eventCategory", "clic");
-        firebaseTagBundle.putString("eventAction", "purchase");
-        firebaseTagBundle.putString("eventLabel", cart.totalAmount.toString());
-        mFirebaseAnalytics.logEvent("eventClick", firebaseTagBundle);
-        Log.d("TAG: ", "Purchase sent.");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, firebaseTagBundle);*/
 
         zeIntent = new Intent(CheckoutActivity.this, PaymentConfirmationActivity.class);
         startActivity(zeIntent);
